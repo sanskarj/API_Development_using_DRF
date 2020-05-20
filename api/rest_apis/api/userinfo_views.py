@@ -1,0 +1,70 @@
+from rest_framework import status,permissions
+from rest_framework.response import Response
+from rest_framework.decorators import api_view,permission_classes
+
+from rest_apis.api.serializers import  Registeruser
+from rest_framework.authtoken.models import Token
+from django.contrib.auth.models import User
+from django.contrib.auth import logout
+from rest_framework.permissions import IsAuthenticated
+from rest_apis.api.serializers import Userinfoserializer
+from rest_apis.models import userinfo
+
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def api_create_userinfo(request):
+    serial = Userinfoserializer(data=request.data)
+    if serial.is_valid():
+        new_user = serial.save()
+        
+        new_user.user = request.user
+        new_user.save()
+        
+        data = {}
+        data["success"] = "User's information is saved successfully"
+        return Response(data)
+    return Response(serial.errors,status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(["PUT"])
+@permission_classes([IsAuthenticated])
+def api_update_userinfo(request):
+    serial = Userinfoserializer(data=request.data)
+    if serial.is_valid():
+        curr_user = serial.update(request.user)
+        data={}
+        data["success"] = "Your information is updated successfully"
+        return Response(data)
+    else:
+        return Response(serial.errors,status=status.HTTP_400_BAD_REQUEST)
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def api_get_userinfo(request):
+    try:
+        h = userinfo.objects.get(user=request.user)
+    except:
+        data = {}
+        data["failure"] = "Information for this user is not found, try creating it via POST"
+        return Response(data,status=status.HTTP_404_NOT_FOUND)
+    serial = Userinfoserializer(h)
+    return Response(serial.data)
+    
+
+
+
+
+
+
+    
+    
+    
+    
+
+
+
+
+
+
+
+
