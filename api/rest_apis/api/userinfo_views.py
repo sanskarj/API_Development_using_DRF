@@ -46,13 +46,13 @@ def api_update_userinfo(request):
 def api_get_userinfo(request):
     try:
         
-        h = userinfo.objects.get(user=request.user)
+        h = userinfo.objects.filter(user=request.user)
     except Exception as e:
         print(e)
         data = {}
         data["failure"] = "Information for this user is not found, try creating it via POST"
         return Response(data,status=status.HTTP_404_NOT_FOUND)
-    serial = Userinfoserializer(h)
+    serial = Userinfoserializer(h,many=True)
     return Response(serial.data)
     
 
