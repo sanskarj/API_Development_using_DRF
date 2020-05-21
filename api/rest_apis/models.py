@@ -38,11 +38,11 @@ class projects(models.Model):
     ends = models.DateField()
     status = models.CharField(max_length=32)
     description = models.CharField(max_length=300)
-    users = models.ForeignKey(User,on_delete=models.CASCADE)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
 class achievements(models.Model):
     date = models.DateField()
     title = models.CharField(max_length=32)
-    users = models.ForeignKey(User,on_delete=models.CASCADE)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
 
 class chat(models.Model):
     receiver = models.ForeignKey(User,on_delete=models.CASCADE,related_name="receiver")

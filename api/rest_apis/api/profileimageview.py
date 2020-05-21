@@ -24,14 +24,18 @@ def api_createprofile(request):
 @api_view(["PUT"])
 @permission_classes([IsAuthenticated])
 def api_updateprofile(request):
-    serial = Profileimageserializer(data=request.data)
-    if serial.is_valid():
-        image = serial.update(request.user)
-        data = {}
-        data['success']  = 'profile image is updated successfully'
-        return Response(data)
-    else:
-        return Response(serial.errors,status=status.HTTP_400_BAD_REQUEST)
+    try:
+        profile  = profileimage.objects.get(user=request.user)
+        profile.delete()
+        serial =Profileimageserializer(data=request.data)
+        if serial.is_valid():
+            d= serial.save(request.user)
+            return Response({"Success" : "Image Updated Successfully"})
+        else:
+            return Response(serial.errors,status=status.HTTP_400_BAD_REQUEST)
+    except:
+        return Response({"failure": "User hasn't yet added the image"},status=status.HTTP_400_BAD_REQUEST)
+    
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def api_getprofile(request):

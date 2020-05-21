@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from django.contrib.auth.models import User
-from rest_apis.models import userinfo,profileimage,communication,hobby,skills,chat
+from rest_apis.models import userinfo,profileimage,communication,hobby,skills,chat,projects,achievements
 
 class Registeruser(serializers.ModelSerializer):
     password2 = serializers.CharField(style={'input_type' : 'password'})
@@ -31,14 +31,6 @@ class Userinfoserializer(serializers.ModelSerializer):
         new_user = userinfo(name=self.validated_data["name"],location=self.validated_data["location"],aboutme=self.validated_data["aboutme"])
         new_user.save()
         return new_user
-    def update(self,user):
-        curr_user = userinfo.objects.get(user=user)
-        data = self.validated_data
-        curr_user.name = data["name"]
-        curr_user.location   = data["location"]
-        curr_user.aboutme = data["aboutme"]
-        curr_user.save()
-        return curr_user
 #Serializer for profile image
 
 class Profileimageserializer(serializers.ModelSerializer):
@@ -49,11 +41,7 @@ class Profileimageserializer(serializers.ModelSerializer):
         image = profileimage(profile_image_url=self.validated_data['profile_image_url'],user=user)
         image.save()
         return image
-    def update(self,user):
-        image = profileimage.objects.get(user=user)
-        image.profile_image_url = self.validated_data['profile_image_url']
-        image.save()
-        return image
+    
 #Serializer for communication
 class CommunicationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -63,16 +51,7 @@ class CommunicationSerializer(serializers.ModelSerializer):
         commu_method = communication(medium=self.validated_data['medium'],medium_url=self.validated_data['medium_url'],user=user)
         commu_method.save()
         return commu_method
-    def update(self,user):
-        try:
-            commu = communication.objects.get(medium=self.validated_data['medium'],user=user)
-    
-            commu.medium = self.validated_data['medium']
-            commu.medium_url = self.validated_data['medium_url']
-            commu.save()
-            return commu
-        except:
-            raise serializers.ValidationError({self.validated_data['medium']:"User hasn't added this medium as one of its means of communication"})
+   
 
 #Serailizer for hobby
 class HobbySerializer(serializers.ModelSerializer):
@@ -102,8 +81,35 @@ class HobbySerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({self.validated_data['name']:'This hobby does not exist,(None of the users of this app saved this as one of their hobby)'})
         
 
+#Serializers for Projects
+class ProjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model =  projects
+        fields= ['info','starts','ends','status','description']
+    def creating(self,user):
+        new_project = projects(info=self.validated_data['info'],starts=self.validated_data['starts'],ends=self.validated_data['ends'],status=self.validated_data['status'],description=self.validated_data['description'],user=user)
+        new_project.save()
+    
+        
+        
+#Serializers for achievements
+class AchievementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model =  achievements
+        fields= ['date','title']
+    def creating(self,user):
+        new_achieve = achievements(date=self.validated_data['date'],title=self.validated_data['title'],user=user)
+        new_achieve.save()
+  
+
+
+
             
-       
+
+        
+        
+    
+
     
 
 
