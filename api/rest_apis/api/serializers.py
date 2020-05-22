@@ -101,6 +101,65 @@ class AchievementSerializer(serializers.ModelSerializer):
         new_achieve = achievements(date=self.validated_data['date'],title=self.validated_data['title'],user=user)
         new_achieve.save()
   
+#Serializers for Skills
+class SkillsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = skills
+        fields = ['name','proficiency']
+    def creating(self,user):
+        new_skill = skills(name=self.validated_data['name'],proficiency=self.validated_data['proficiency'])
+        new_skill.save()
+        new_skill.users.add(user)
+        new_skill.save()
+    def add(self,user):
+        try:
+            skill = skills.objects.get(name=self.validated_data['name'],proficiency=self.validated_data['proficiency'])
+            skill.users.add(user)
+            skill.save()
+        except Exception as e:
+            print(e)
+            self.creating(user)
+    def delete(self,user):
+        try:
+
+            skill = skills.objects.get(name=self.validated_data['name'],proficiency =self.validated_data['proficiency'])
+            try:
+                skill.users.remove(user)
+            except Exception as e:
+                print(e)
+                raise serializers.ValidationError({"failure":"skill not found for this user"})
+        except Exception as e:
+            raise serializers.ValidationError({"failure":"skill with given credentials does not exist"})
+    def update(self,user,name,proficiency):
+        try:
+
+            skill = skills.objects.get(name=name,proficiency =proficiency)
+            try:
+                skill.users.remove(user)
+                try:
+                    new_skill= skill.objects.get(name=self.validated_data['name'],proficiency=self.validated_data['proficiency'])
+                    new_skill.users.add(user)
+                except Exception as e:
+                    print(e)
+                    self.creating(user)
+            except Exception as e:
+                print(e)
+                raise serializers.ValidationError({"failure":"skill not found for this user"})
+        except Exception as e:
+            print(e)
+            raise serializers.ValidationError({"failure":"skill with given credentials does not exist"})
+        
+
+
+
+        
+
+
+
+
+
+
+
 
 
 
