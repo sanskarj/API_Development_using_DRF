@@ -24,8 +24,8 @@ def api_create_userinfo(request):
         
         data = {}
         data["success"] = "User's information is saved successfully"
-        return Response(data)
-    return Response(serial.errors,status=status.HTTP_400_BAD_REQUEST)
+        return Response([data])
+    return Response([serial.errors],status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(["PUT"])
 @permission_classes([IsAuthenticated])
@@ -36,11 +36,11 @@ def api_update_userinfo(request):
         serial = Userinfoserializer(data=request.data)
         if serial.is_valid():
             d= serial.save(request.user)
-            return Response({"Success" : "UserInfo Updated Successfully"})
+            return Response([{"Success" : "UserInfo Updated Successfully"}])
         else:
-            return Response(serial.errors,status=status.HTTP_400_BAD_REQUEST)
+            return Response([serial.errors],status=status.HTTP_400_BAD_REQUEST)
     except:
-        return Response({"failure": "Info for that user is not yet created"},status=status.HTTP_400_BAD_REQUEST)
+        return Response([{"failure": "Info for that user is not yet created"}],status=status.HTTP_400_BAD_REQUEST)
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def api_get_userinfo(request):
@@ -51,7 +51,7 @@ def api_get_userinfo(request):
         print(e)
         data = {}
         data["failure"] = "Information for this user is not found, try creating it via POST"
-        return Response(data,status=status.HTTP_404_NOT_FOUND)
+        return Response([data],status=status.HTTP_404_NOT_FOUND)
     serial = Userinfoserializer(h,many=True)
     return Response(serial.data)
     

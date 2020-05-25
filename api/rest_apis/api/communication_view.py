@@ -19,7 +19,7 @@ def api_addcommunication(request):
         data['success']  = "communication method is added successfully"
         return Response(data)
     else:
-        return Response(serial.errors,status=status.HTTP_400_BAD_REQUEST)
+        return Response([serial.errors],status=status.HTTP_400_BAD_REQUEST)
 @api_view(["PUT"])
 @permission_classes([IsAuthenticated])
 def api_updatecommunication(request,medium):
@@ -29,11 +29,11 @@ def api_updatecommunication(request,medium):
         serial = CommunicationSerializer(data=request.data)
         if serial.is_valid():
             c= serial.save(request.user)
-            return Response({"Success" : "Communication method Updated Successfully"})
+            return Response([{"Success" : "Communication method Updated Successfully"}])
         else:
-            return Response(serial.errors,status=status.HTTP_400_BAD_REQUEST)
+            return Response([serial.errors],status=status.HTTP_400_BAD_REQUEST)
     except:
-        return Response({"failure": "Communication with given medium does not exist for this user"},status=status.HTTP_400_BAD_REQUEST)
+        return Response([{"failure": "Communication with given medium does not exist for this user"}],status=status.HTTP_400_BAD_REQUEST)
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def api_getcommunication(request):

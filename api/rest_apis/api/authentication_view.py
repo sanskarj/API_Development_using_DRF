@@ -4,7 +4,7 @@ from rest_framework.decorators import api_view,permission_classes
 
 from rest_apis.api.serializers import  Registeruser
 from rest_framework.authtoken.models import Token
-from django.contrib.auth import logout
+from django.contrib.auth import logout,login,authenticate
 from rest_framework.permissions import IsAuthenticated
 
 @api_view(["POST"])
@@ -32,6 +32,30 @@ def api_logout_user(request):
     data  = {}
     data["success"] = "user logged out successfully"
     return Response(data=[data])
+@api_view(["POST"])
+@permission_classes([permissions.AllowAny])
+def api_login_user(request):
+    cred = list(request.data.values())
+    if len(cred) ==2:
+    
+        user  = authenticate(request,username=cred[0],password=cred[1])
+        if user is not None:
+            login(request,user)
+            data = {}
+            data['sucess']   = "User logged in successfully"
+            data['Key']   = Token.objects.get(user=user).key
+            return Response([data],status=status.HTTP_200_OK)
+        else:
+            return Response([{"failure" :"User with given login credentials does not exist"}],status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response([{"failure" : "Insufficeint or unwanted login credentials"}],status=status.HTTP_400_BAD_REQUEST)
+        
+ 
+
+    
+
+    
+    
 
     
 

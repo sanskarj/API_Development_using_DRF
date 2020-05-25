@@ -15,7 +15,7 @@ def api_addskill(request):
     serial= SkillsSerializer(data=request.data)
     if serial.is_valid():
         serial.add(request.user)
-        return Response({"success" : "skill added successfully"})
+        return Response([{"success" : "skill added successfully"}])
 
 @api_view(["DELETE"])
 @permission_classes([IsAuthenticated])
@@ -23,7 +23,7 @@ def api_deleteskill(request):
     serial = SkillsSerializer(data=request.data)
     if serial.is_valid():
         serial.delete(request.user)
-        return Response({"success":"skill deleted"})
+        return Response([{"success":"skill deleted"}])
 
         
 @api_view(["GET"])
@@ -37,7 +37,7 @@ def api_getskill(request):
     except:
         data= {}
         data['failure']  =  "You don't have any skills yet, why are u hiding your talent let the world know your skill"
-        return Response(data=data,status=status.HTTP_400_BAD_REQUEST)
+        return Response(data=[data],status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(["PUT"])
 @permission_classes([IsAuthenticated])
@@ -45,9 +45,9 @@ def api_updateskill(request,name,proficiency):
     serial = SkillsSerializer(data=request.data)
     if serial.is_valid():
         serial.update(request.user,name,proficiency)
-        return Response({"success":"skill updated"})
+        return Response([{"success":"skill updated"}])
     else:
-        return Response(serial.errors,status=status.HTTP_400_BAD_REQUEST)
+        return Response([serial.errors],status=status.HTTP_400_BAD_REQUEST)
     
 
         

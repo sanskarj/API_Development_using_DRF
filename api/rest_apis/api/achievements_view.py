@@ -15,8 +15,8 @@ from rest_apis.models import achievements
 def api_create_achievement(request):
     serial = AchievementSerializer(data=request.data)
     if serial.is_valid():
-        serial.save(request.user)
-        return Response({"success" : "Achievement has been added"})
+        serial.creating(request.user)
+        return Response([{"success" : "Achievement has been added"}])
     else:
         return Response(serial.errors,status=status.HTTP_400_BAD_REQUEST)
 
@@ -27,9 +27,9 @@ def api_delete_achievement(request,title):
     try:
         achieve = achievements.objects.get(title=title,user=request.user)
         achieve.delete()
-        return Response({"success":"Achievement deleted successfully"})
+        return Response([{"success":"Achievement deleted successfully"}])
     except:
-        return Response({"failure":"User doesn't have any achievement with the given title field"},status=status.HTTP_400_BAD_REQUEST)
+        return Response([{"failure":"User doesn't have any achievement with the given title field"}],status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -39,7 +39,7 @@ def api_get_achievement(request):
         serial = AchievementSerializer(achieve,many=True)
         return Response(serial.data)
     except:
-        Response({"failure":"User doesn't have any achievement yet. try adding one"},status=status.HTTP_400_BAD_REQUEST)
+        Response([{"failure":"User doesn't have any achievement yet. try adding one"}],status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
@@ -50,11 +50,11 @@ def api_update_achievement(request,title):
         serial = AchievementSerializer(data=request.data)
         if serial.is_valid():
             serial.creating(request.user)
-            return Response({"Success" : "Achievement Updated Successfully"})
+            return Response([{"Success" : "Achievement Updated Successfully"}])
         else:
             return Response(serial.errors,status=status.HTTP_400_BAD_REQUEST)
     except:
-        return Response({"failure": "Achievement with given title does not exist for this user"},status=status.HTTP_400_BAD_REQUEST)
+        return Response([{"failure": "Achievement with given title does not exist for this user"}],status=status.HTTP_400_BAD_REQUEST)
         
     
    

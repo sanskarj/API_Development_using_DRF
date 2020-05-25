@@ -17,9 +17,9 @@ def api_addhobby(request):
         req_hobby = serial.save(request.user)
         data={}
         data['success']  = "hobby is added successfully"
-        return Response(data)
+        return Response([data])
     else:
-        return Response(serial.errors,status=status.HTTP_400_BAD_REQUEST)
+        return Response([serial.errors],status=status.HTTP_400_BAD_REQUEST)
 @api_view(["DELETE"])
 @permission_classes([IsAuthenticated])
 def api_deletehobby(request):
@@ -28,9 +28,9 @@ def api_deletehobby(request):
         serial.delete(request.user)
         data = {}
         data['success']  = 'hobby is deleted successfully'
-        return Response(data)
+        return Response([data])
     else:
-        return Response(serial.errors,status=status.HTTP_400_BAD_REQUEST)
+        return Response([serial.errors],status=status.HTTP_400_BAD_REQUEST)
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def api_gethobby(request):

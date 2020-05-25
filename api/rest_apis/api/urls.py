@@ -1,4 +1,4 @@
-from rest_apis.api.authentication_view import api_register_user,api_logout_user
+from rest_apis.api.authentication_view import api_register_user,api_logout_user,api_login_user
 
 from django.urls import path
 from  rest_framework.authtoken.views import obtain_auth_token
@@ -14,7 +14,7 @@ app_name  = 'rest_apis'
 urlpatterns = [
 
     path('registeruser',api_register_user,name="user_register"),
-    path('login',obtain_auth_token,name="user_login"),
+    path('login',api_login_user,name="user_login"),
     path('logout',api_logout_user,name="user_logout"),
 
     path('adduserinfo',api_create_userinfo,name="user_create"),
@@ -47,29 +47,5 @@ urlpatterns = [
     path('addskill',api_addskill,name="skill_create"),
     path('deleteskill',api_deleteskill,name="skill_delete"),
     path('updateskill/<name>/<proficiency>',api_updateskill,name="skill_update"),
-    path('getskill',api_getskill,name="skill_get"),
-
-
-
-
-
-
-    
-    
-     
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-    
+    path('getskill',api_getskill,name="skill_get"),   
 ]

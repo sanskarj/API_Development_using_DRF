@@ -1,6 +1,9 @@
 from rest_framework import serializers
 
 from django.contrib.auth.models import User
+
+from django.contrib.auth import login,authenticate
+
 from rest_apis.models import userinfo,profileimage,communication,hobby,skills,chat,projects,achievements
 
 class Registeruser(serializers.ModelSerializer):
@@ -150,6 +153,8 @@ class SkillsSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"failure":"skill with given credentials does not exist"})
         
 
+
+#Serialisers for login
 
 
         

@@ -17,9 +17,9 @@ def api_create_project(request):
     
     if serial.is_valid():
         serial.creating(request.user)
-        return Response({"success" : "Project has been added"})
+        return Response([{"success" : "Project has been added"}])
     else:
-        return Response(serial.errors,status=status.HTTP_400_BAD_REQUEST)
+        return Response([serial.errors],status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['DELETE'])
@@ -28,9 +28,9 @@ def api_delete_project(request,info):
     try:
         pro = projects.objects.get(info=info,user=request.user)
         pro.delete()
-        return Response({"success":"Project deleted successfully"})
+        return Response([{"success":"Project deleted successfully"}])
     except:
-        return Response({"failure":"User doesn't have any project with the given info field"},status=status.HTTP_400_BAD_REQUEST)
+        return Response([{"failure":"User doesn't have any project with the given info field"}],status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -40,7 +40,7 @@ def api_get_project(request):
         serial = ProjectSerializer(pro,many=True)
         return Response(serial.data)
     except:
-        Response({"failure":"User doesn't have any project yet. try adding one"},status=status.HTTP_400_BAD_REQUEST)
+        Response([{"failure":"User doesn't have any project yet. try adding one"}],status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
@@ -51,11 +51,11 @@ def api_update_project(request,info):
         serial  = ProjectSerializer(data=request.data)
         if serial.is_valid():
             serial.creating(request.user)
-            return Response({"success":"Project updated successfully"})
+            return Response([{"success":"Project updated successfully"}])
         else:
             return Response(serial.errors,status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
-        return Response({"failure" :"User does not have any prject with given info field"},status=status.HTTP_400_BAD_REQUEST)
+        return Response([{"failure" :"User does not have any prject with given info field"}],status=status.HTTP_400_BAD_REQUEST)
 
     
     
