@@ -17,10 +17,9 @@ from rest_apis.models import userinfo
 def api_create_userinfo(request):
     serial = Userinfoserializer(data=request.data)
     if serial.is_valid():
-        new_user = serial.save()
+        new_user = serial.save(request.user)
         
-        new_user.user = request.user
-        new_user.save()
+        
         
         data = {}
         data["success"] = "User's information is saved successfully"
@@ -31,7 +30,7 @@ def api_create_userinfo(request):
 @permission_classes([IsAuthenticated])
 def api_update_userinfo(request):
     try:
-        person  = Userinfoserializer.objects.get(user=request.user)
+        person  = userinfo.objects.get(user=request.user)
         person.delete()
         serial = Userinfoserializer(data=request.data)
         if serial.is_valid():
@@ -39,7 +38,8 @@ def api_update_userinfo(request):
             return Response([{"Success" : "UserInfo Updated Successfully"}])
         else:
             return Response([serial.errors],status=status.HTTP_400_BAD_REQUEST)
-    except:
+    except Exception as e:
+        print(e)
         return Response([{"failure": "Info for that user is not yet created"}],status=status.HTTP_400_BAD_REQUEST)
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])

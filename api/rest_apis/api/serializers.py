@@ -30,8 +30,8 @@ class Userinfoserializer(serializers.ModelSerializer):
         model = userinfo
         fields  = ['name','location','aboutme']
     
-    def save(self):
-        new_user = userinfo(name=self.validated_data["name"],location=self.validated_data["location"],aboutme=self.validated_data["aboutme"])
+    def save(self,user):
+        new_user = userinfo(name=self.validated_data["name"],location=self.validated_data["location"],aboutme=self.validated_data["aboutme"],user=user)
         new_user.save()
         return new_user
 #Serializer for profile image
