@@ -48,4 +48,5 @@ def api_getcommunication(request):
         data = {}
         data['failure'] = "User doesn't have any methods of communication yet. try adding one"
         return Response(data)
+
     

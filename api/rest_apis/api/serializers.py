@@ -90,8 +90,32 @@ class ProjectSerializer(serializers.ModelSerializer):
         model =  projects
         fields= ['info','starts','ends','status','description']
     def creating(self,user):
-        new_project = projects(info=self.validated_data['info'],starts=self.validated_data['starts'],ends=self.validated_data['ends'],status=self.validated_data['status'],description=self.validated_data['description'],user=user)
-        new_project.save()
+        try:
+            pro = projects.objects.get(info=self.validated_data['info'])
+            pro.users.add(user)
+            pro.save()
+        except:
+
+            new_project = projects(info=self.validated_data['info'],starts=self.validated_data['starts'],ends=self.validated_data['ends'],status=self.validated_data['status'],description=self.validated_data['description'])
+            new_project.save()
+            new_project.users.add(user)
+            new_project.save()
+    def update(self,info):
+        try:
+            pro = projects.objects.get(info=info)
+            new_data = self.validated_data
+            pro.info = new_data['info']
+            pro.starts = new_data['starts']
+            pro.ends = new_data['ends']
+            pro.status  = new_data['status']
+            pro.description = new_data['description']
+            pro.save()
+        except:
+            raise serializers.ValidationError({"failure" : "project with given info doesn't exist. and hence can't be updated"})
+
+
+
+
     
         
         

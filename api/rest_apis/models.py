@@ -38,7 +38,7 @@ class projects(models.Model):
     ends = models.DateField()
     status = models.CharField(max_length=32)
     description = models.CharField(max_length=300)
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    users = models.ManyToManyField(User)
 class achievements(models.Model):
     date = models.DateField()
     title = models.CharField(max_length=32)
