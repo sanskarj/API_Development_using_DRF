@@ -39,8 +39,11 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_apis',
      'rest_framework.authtoken',
-     'django_extensions'
+     'django_extensions',
+     'notifications'
 ]
+DJANGO_NOTIFICATIONS_CONFIG = { 'USE_JSONFIELD': True}
+DJANGO_NOTIFICATIONS_CONFIG = { 'SOFT_DELETE': True}
 REST_FRAMEWORK={
    'DEFAULT_AUTHENTICATION_CLASSES' : [
        'rest_framework.authentication.TokenAuthentication',

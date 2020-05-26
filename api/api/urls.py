@@ -17,12 +17,13 @@ from django.contrib import admin
 from django.urls import path,include
 from django.contrib.auth.models import User
 
-
+import notifications.urls
 # Serializers define the API representation.
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/',include('rest_apis.api.urls')),
+    path('notify/',include(notifications.urls,namespace="notifications"))
 
    
 ]
