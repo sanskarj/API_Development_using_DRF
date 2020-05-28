@@ -51,9 +51,16 @@ class CommunicationSerializer(serializers.ModelSerializer):
         model = communication
         fields = ['medium','medium_url']
     def save(self,user):
-        commu_method = communication(medium=self.validated_data['medium'],medium_url=self.validated_data['medium_url'],user=user)
-        commu_method.save()
-        return commu_method
+        try:
+            commu = communication.objects.get(user=user,medium=self.validated_data['medium'])
+            commu.medium_url = self.validated_data['medium_url']
+            commu.save()
+            return commu
+        except:
+
+            commu_method = communication(medium=self.validated_data['medium'],medium_url=self.validated_data['medium_url'],user=user)
+            commu_method.save()
+            return commu_method
    
 
 #Serailizer for hobby
