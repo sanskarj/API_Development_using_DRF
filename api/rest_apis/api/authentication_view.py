@@ -1,8 +1,8 @@
 from rest_framework import status,permissions
 from rest_framework.response import Response
 from rest_framework.decorators import api_view,permission_classes
-from notifications.signals import notify
-from rest_apis.api.serializers import  Registeruser
+#from notifications.signals import notify
+from .serializers import  Registeruser
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import logout,login,authenticate
 from rest_framework.permissions import IsAuthenticated
@@ -41,7 +41,7 @@ def api_login_user(request):
         user  = authenticate(request,username=cred[0],password=cred[1])
         if user is not None:
             login(request,user)
-            notify.send(user,recipient=user,verb="This is a notification")
+            #notify.send(user,recipient=user,verb="This is a notification")
             data = {}
             data['sucess']   = "User logged in successfully"
             data['Key']   = Token.objects.get(user=user).key

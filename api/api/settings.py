@@ -40,10 +40,10 @@ INSTALLED_APPS = [
     'rest_apis',
      'rest_framework.authtoken',
      'django_extensions',
-     'notifications'
+     #'notifications'
 ]
-DJANGO_NOTIFICATIONS_CONFIG = { 'USE_JSONFIELD': True}
-DJANGO_NOTIFICATIONS_CONFIG = { 'SOFT_DELETE': True}
+#DJANGO_NOTIFICATIONS_CONFIG = { 'USE_JSONFIELD': True}
+#DJANGO_NOTIFICATIONS_CONFIG = { 'SOFT_DELETE': True}
 REST_FRAMEWORK={
    'DEFAULT_AUTHENTICATION_CLASSES' : [
        'rest_framework.authentication.TokenAuthentication',
@@ -91,9 +91,9 @@ WSGI_APPLICATION = 'api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'users',
+        'NAME': 'students',
         'USER': 'root',
-        'PASSWORD': 'jain@123',
+        'PASSWORD': 'udbhav@123',
         'HOST': 'localhost',
         'PORT': '3306',
     }
