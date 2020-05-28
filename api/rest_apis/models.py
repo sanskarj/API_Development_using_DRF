@@ -42,6 +42,7 @@ class projects(models.Model):
 class achievements(models.Model):
     date = models.DateField()
     title = models.CharField(max_length=32)
+    description  = models.CharField(max_length=200)
     user = models.ForeignKey(User,on_delete=models.CASCADE)
 
 class chat(models.Model):

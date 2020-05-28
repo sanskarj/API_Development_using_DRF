@@ -130,9 +130,9 @@ class ProjectSerializer(serializers.ModelSerializer):
 class AchievementSerializer(serializers.ModelSerializer):
     class Meta:
         model =  achievements
-        fields= ['date','title']
+        fields= ['date','title','description']
     def creating(self,user):
-        new_achieve = achievements(date=self.validated_data['date'],title=self.validated_data['title'],user=user)
+        new_achieve = achievements(date=self.validated_data['date'],title=self.validated_data['title'],description=self.validated_data['description'],user=user)
         new_achieve.save()
   
 #Serializers for Skills
