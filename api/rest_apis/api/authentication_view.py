@@ -41,7 +41,11 @@ def api_login_user(request):
         user  = authenticate(request,username=cred[0],password=cred[1])
         if user is not None:
             login(request,user)
+<<<<<<< HEAD
            
+=======
+            #notify.send(user,recipient=user,verb="This is a notification")
+>>>>>>> 526610e4217fa800167ff982e624dd71ae7ea338
             data = {}
             data['sucess']   = "User logged in successfully"
             data['Key']   = Token.objects.get(user=user).key

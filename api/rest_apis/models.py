@@ -25,7 +25,7 @@ class communication(models.Model):
 
 class hobby(models.Model):
     name = models.CharField(max_length=32)
-    hobby_image_url =  models.URLField()
+    hobby_image_url =  models.TextField()
     users = models.ManyToManyField(User)
 class skills(models.Model):
     name = models.CharField(max_length=32)
