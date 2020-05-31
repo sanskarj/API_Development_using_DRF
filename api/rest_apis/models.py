@@ -49,6 +49,13 @@ class chat(models.Model):
     receiver = models.ForeignKey(User,on_delete=models.CASCADE,related_name="receiver")
     sender = models.ForeignKey(User,on_delete=models.CASCADE,related_name="sender")
     message = models.CharField(max_length=200)
+class badge(models.Model):
+    title = models.CharField(max_length=32)
+    image_url = models.URLField()
+    description = models.CharField(max_length=200)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+
+    
     
 
     

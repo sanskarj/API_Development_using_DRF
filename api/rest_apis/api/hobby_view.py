@@ -43,5 +43,10 @@ def api_gethobby(request):
         data= {}
         data['failure']  =  'you do not have any hobbies yet, how about try adding one'
         return Response(data=data,status=status.HTTP_400_BAD_REQUEST)
-
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def api_get_all_hobbies(request):
+    all_hobby= hobby.objects.all()
+    serial = HobbySerializer(all_hobby,many=True)
+    return Response(serial.data)
   

@@ -48,7 +48,13 @@ def api_updateskill(request,name,proficiency):
         return Response([{"success":"skill updated"}])
     else:
         return Response([serial.errors],status=status.HTTP_400_BAD_REQUEST)
-    
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def api_get_all_skills(request):
+    all_skills = skills.objects.all()
+    serial = SkillsSerializer(all_skills,many=True)
+    return Response(serial.data)
 
         
     

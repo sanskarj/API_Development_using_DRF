@@ -55,6 +55,12 @@ def api_update_project(request,info):
         return Response([{"success" : "project updated"}],status=status.HTTP_200_OK)
     else:
         return Response(serial.errors,status=status.HTTP_400_BAD_REQUEST)
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def api_get_all_projects(request):
+    all_pro = projects.objects.all()
+    serial = ProjectSerializer(all_pro,many=True)
+    return Response(serial.data)
 
 
 

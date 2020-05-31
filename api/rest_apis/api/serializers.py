@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 from django.contrib.auth import login,authenticate
 
-from rest_apis.models import userinfo,profileimage,communication,hobby,skills,chat,projects,achievements
+from rest_apis.models import userinfo,profileimage,communication,hobby,skills,chat,projects,achievements,badge
 
 class Registeruser(serializers.ModelSerializer):
     password2 = serializers.CharField(style={'input_type' : 'password'})
@@ -185,7 +185,20 @@ class SkillsSerializer(serializers.ModelSerializer):
         
 
 
-#Serialisers for login
+#Serialisers for badge
+class BadgeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = badge
+        fields = ['title','image_url','description']
+    def create(self,user):
+        try:
+            medal = badge.objects.get(title=self.validated_data['title'])
+            raise serializers.ValidationError([{'failure' : 'badge with this title already exists. try renaming the title'}])
+        except:
+            new_badge = badge(title=self.validated_data['title'],image_url=self.validated_data['image_url'],description=self.validated_data['description'],user=user)
+            new_badge.save()
+
+
 
 
         
