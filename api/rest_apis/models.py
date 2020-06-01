@@ -51,7 +51,7 @@ class chat(models.Model):
     message = models.CharField(max_length=200)
 class badge(models.Model):
     title = models.CharField(max_length=32)
-    image_url = models.URLField()
+    image_url = models.CharField(max_length=40)
     description = models.CharField(max_length=200)
     user = models.ForeignKey(User,on_delete=models.CASCADE)
 

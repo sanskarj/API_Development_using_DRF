@@ -22,15 +22,20 @@ def api_addhobby(request):
         return Response([serial.errors],status=status.HTTP_400_BAD_REQUEST)
 @api_view(["DELETE"])
 @permission_classes([IsAuthenticated])
-def api_deletehobby(request):
-    serial = HobbySerializer(data=request.data)
-    if serial.is_valid():
-        serial.delete(request.user)
-        data = {}
-        data['success']  = 'hobby is deleted successfully'
-        return Response([data])
-    else:
-        return Response([serial.errors],status=status.HTTP_400_BAD_REQUEST)
+def api_deletehobby(request,title):
+    try:
+        get_hob = hobby.objects.get(name=title)
+        try:
+            get_hob.users.remove(request.user)
+            return Response([{"sucess" : "hobby deleted successfully"}])
+        except Exception as e:
+            print(e)
+            return Response([{"failure":"u don't have this hobby"}])
+    except Exception as e:
+        print(e)
+        return Response([{"failure":"the hobby with given name doesn't exist"}])
+    
+    
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def api_gethobby(request):

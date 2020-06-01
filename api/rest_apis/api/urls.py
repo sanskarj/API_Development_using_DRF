@@ -30,7 +30,7 @@ urlpatterns = [
     path('getcommunication',api_getcommunication,name="communication_get"),
 
     path('addhobby',api_addhobby,name="hobby_create"),
-    path('deletehobby',api_deletehobby,name="hobby_delete"),
+    path('deletehobby/<title>',api_deletehobby,name="hobby_delete"),
     path('gethobby',api_gethobby,name="hobby_get"),
 
     path('addproject',api_create_project,name="project_create"),

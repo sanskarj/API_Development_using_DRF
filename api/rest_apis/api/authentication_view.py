@@ -15,7 +15,7 @@ def api_register_user(request):
     new_list = []
     if serial.is_valid():
         new_user = serial.save()
-        data['response'] = "user registered successfully"
+        data['respse'] = "user registered successfully"
         data['email'] = new_user.email
         data['username'] = new_user.username
         data['token'] = Token.objects.get(user=new_user).key
@@ -41,11 +41,8 @@ def api_login_user(request):
         user  = authenticate(request,username=cred[0],password=cred[1])
         if user is not None:
             login(request,user)
-<<<<<<< HEAD
            
-=======
-            #notify.send(user,recipient=user,verb="This is a notification")
->>>>>>> 526610e4217fa800167ff982e624dd71ae7ea338
+
             data = {}
             data['sucess']   = "User logged in successfully"
             data['Key']   = Token.objects.get(user=user).key
