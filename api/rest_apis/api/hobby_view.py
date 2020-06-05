@@ -9,49 +9,67 @@ from django.contrib.auth import logout
 from rest_framework.permissions import IsAuthenticated
 from rest_apis.api.serializers import HobbySerializer
 from rest_apis.models import hobby
-@api_view(["POST"])
+
+@api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def api_addhobby(request):
-    serial= HobbySerializer(data=request.data)
-    if serial.is_valid():
-        req_hobby = serial.save(request.user)
-        data={}
-        data['success']  = "hobby is added successfully"
-        return Response([data])
+def api_add_hobbies(request):
+    errors=[]
+    for new_hob in request.data['hobbies']:
+        serial  = HobbySerializer(data=new_hob)
+        if serial.is_valid():
+            serial.save(request.user)
+        else:
+            errors.append({new_hob['name']:serial.errors})
+    if len(errors)==0:
+        return Response([{"success" : "new hobbies are created successfully"}],status=status.HTTP_200_OK)
     else:
-        return Response([serial.errors],status=status.HTTP_400_BAD_REQUEST)
-@api_view(["DELETE"])
-@permission_classes([IsAuthenticated])
-def api_deletehobby(request,title):
-    try:
-        get_hob = hobby.objects.get(name=title)
-        try:
-            get_hob.users.remove(request.user)
-            return Response([{"sucess" : "hobby deleted successfully"}])
-        except Exception as e:
-            print(e)
-            return Response([{"failure":"u don't have this hobby"}])
-    except Exception as e:
-        print(e)
-        return Response([{"failure":"the hobby with given name doesn't exist"}])
-    
-    
-@api_view(["GET"])
-@permission_classes([IsAuthenticated])
-def api_gethobby(request):
-    try:
-        hobbies = hobby.objects.filter(users=request.user)
-        print(hobbies)
-        serial = HobbySerializer(hobbies,many=True)
-        return Response(serial.data)
-    except:
-        data= {}
-        data['failure']  =  'you do not have any hobbies yet, how about try adding one'
-        return Response(data=data,status=status.HTTP_400_BAD_REQUEST)
+        return Response([{"failure":errors}],status=status.HTTP_206_PARTIAL_CONTENT)
+
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def api_get_all_hobbies(request):
-    all_hobby= hobby.objects.all()
-    serial = HobbySerializer(all_hobby,many=True)
-    return Response(serial.data)
+def api_get_hobbies(request):
+   hobby_list =[]
+   try:
+       hobbies = hobby.objects.filter(users=request.user)
+       for h in list(hobbies):
+           hobby_list.append({"name":h.name,"id":h.id})
+       return Response(hobby_list,status=status.HTTP_200_OK)
+   except:
+       return Response([{"failure":"User with given id doesn't have any hobby. try adding one"}],status=status.HTTP_400_BAD_REQUEST)
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def api_delete_hobbies(request):
+    for id in request.data['ids']:
+        h = hobby.objects.get(id=id)
+        h.users.remove(request.user)
+    return Response([{"success" : "User is removed from the hobbies with given ids"}],status=status.HTTP_200_OK)
+
+
+    
+
+
+
+
+    
+
+
+
+
+        
+
+    
+  
+            
+       
+
+
+        
+        
+
+    
+    
+
+
+
   

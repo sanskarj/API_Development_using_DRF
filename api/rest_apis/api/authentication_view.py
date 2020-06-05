@@ -6,6 +6,7 @@ from rest_apis.api.serializers import  Registeruser
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import logout,login,authenticate
 from rest_framework.permissions import IsAuthenticated
+from rest_apis.models import userinfo
 
 @api_view(["POST"])
 @permission_classes([permissions.AllowAny])
@@ -52,7 +53,9 @@ def api_login_user(request):
     else:
         return Response([{"failure" : "Insufficeint or unwanted login credentials"}],status=status.HTTP_400_BAD_REQUEST)
         
- 
+
+    
+
 
     
 

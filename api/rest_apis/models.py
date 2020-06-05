@@ -25,12 +25,13 @@ class communication(models.Model):
 
 class hobby(models.Model):
     name = models.CharField(max_length=32)
-    hobby_image_url =  models.TextField()
     users = models.ManyToManyField(User)
 class skills(models.Model):
     name = models.CharField(max_length=32)
-    proficiency = models.IntegerField()
+    competancy = models.CharField(max_length=32)
     users = models.ManyToManyField(User)
+class Skill_names(models.Model):
+    name = models.CharField(max_length=32)
 
 class projects(models.Model):
     info = models.CharField(max_length=32)
@@ -39,6 +40,7 @@ class projects(models.Model):
     status = models.CharField(max_length=32)
     description = models.CharField(max_length=300)
     users = models.ManyToManyField(User)
+    skills = models.ManyToManyField(Skill_names)
 class achievements(models.Model):
     date = models.DateField()
     title = models.CharField(max_length=32)
@@ -55,7 +57,11 @@ class badge(models.Model):
     description = models.CharField(max_length=200)
     user = models.ForeignKey(User,on_delete=models.CASCADE)
 
-    
+class Imageupload(models.Model):
+    image = models.ImageField(blank=False,null=False)
+    user  = models.ForeignKey(User,on_delete=models.CASCADE)
+
+
     
 
     

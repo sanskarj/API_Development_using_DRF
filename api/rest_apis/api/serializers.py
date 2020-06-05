@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 from django.contrib.auth import login,authenticate
 
-from rest_apis.models import userinfo,profileimage,communication,hobby,skills,chat,projects,achievements,badge
+from rest_apis.models import userinfo,profileimage,communication,hobby,skills,chat,projects,achievements,badge,Imageupload
 
 class Registeruser(serializers.ModelSerializer):
     password2 = serializers.CharField(style={'input_type' : 'password'})
@@ -67,7 +67,7 @@ class CommunicationSerializer(serializers.ModelSerializer):
 class HobbySerializer(serializers.ModelSerializer):
     class Meta:
         model = hobby
-        fields = ['name','hobby_image_url']
+        fields = ['name']
     def save(self,user):
         try:
             req_hobby = hobby.objects.get(name=self.validated_data['name'])
@@ -75,20 +75,12 @@ class HobbySerializer(serializers.ModelSerializer):
             req_hobby.save()
             return req_hobby
         except:
-            new_hobby = hobby(name=self.validated_data['name'],hobby_image_url=self.validated_data['hobby_image_url'])
+            new_hobby = hobby(name=self.validated_data['name'])
             new_hobby.save()
             new_hobby.users.add(user)
             new_hobby.save()
             return new_hobby
-    def delete(self,user):
-        try:
-            req_hobby = hobby.objects.get(name=self.validated_data['name'])
-            try:
-                req_hobby.users.remove(user)
-            except:
-                raise serializers.ValidationError({self.validated_data['name']:'This hobby is either removed or never added by you'})
-        except:
-            raise serializers.ValidationError({self.validated_data['name']:'This hobby does not exist,(None of the users of this app saved this as one of their hobby)'})
+    
         
 
 #Serializers for Projects
@@ -97,28 +89,13 @@ class ProjectSerializer(serializers.ModelSerializer):
         model =  projects
         fields= ['info','starts','ends','status','description']
     def creating(self,user):
-        try:
-            pro = projects.objects.get(info=self.validated_data['info'])
-            pro.users.add(user)
-            pro.save()
-        except:
+        
 
-            new_project = projects(info=self.validated_data['info'],starts=self.validated_data['starts'],ends=self.validated_data['ends'],status=self.validated_data['status'],description=self.validated_data['description'])
-            new_project.save()
-            new_project.users.add(user)
-            new_project.save()
-    def update(self,info):
-        try:
-            pro = projects.objects.get(info=info)
-            new_data = self.validated_data
-            pro.info = new_data['info']
-            pro.starts = new_data['starts']
-            pro.ends = new_data['ends']
-            pro.status  = new_data['status']
-            pro.description = new_data['description']
-            pro.save()
-        except:
-            raise serializers.ValidationError({"failure" : "project with given info doesn't exist. and hence can't be updated"})
+        new_project = projects(info=self.validated_data['info'],starts=self.validated_data['starts'],ends=self.validated_data['ends'],status=self.validated_data['status'],description=self.validated_data['description'])
+        new_project.save()
+        new_project.users.add(user)
+        new_project.save()
+    
 
 
 
@@ -139,94 +116,34 @@ class AchievementSerializer(serializers.ModelSerializer):
 class SkillsSerializer(serializers.ModelSerializer):
     class Meta:
         model = skills
-        fields = ['name','proficiency']
+        fields = ['name','competancy']
     def creating(self,user):
-        new_skill = skills(name=self.validated_data['name'],proficiency=self.validated_data['proficiency'])
+        new_skill = skills(name=self.validated_data['name'],competancy=self.validated_data['competancy'])
         new_skill.save()
         new_skill.users.add(user)
         new_skill.save()
     def add(self,user):
         try:
-            skill = skills.objects.get(name=self.validated_data['name'],proficiency=self.validated_data['proficiency'])
+            skill = skills.objects.get(name=self.validated_data['name'],competancy=self.validated_data['competancy'])
             skill.users.add(user)
             skill.save()
         except Exception as e:
             print(e)
             self.creating(user)
-    def delete(self,user):
-        try:
-
-            skill = skills.objects.get(name=self.validated_data['name'],proficiency =self.validated_data['proficiency'])
-            try:
-                skill.users.remove(user)
-            except Exception as e:
-                print(e)
-                raise serializers.ValidationError({"failure":"skill not found for this user"})
-        except Exception as e:
-            raise serializers.ValidationError({"failure":"skill with given credentials does not exist"})
-    def update(self,user,name,proficiency):
-        try:
-
-            skill = skills.objects.get(name=name,proficiency =proficiency)
-            try:
-                skill.users.remove(user)
-                try:
-                    new_skill= skill.objects.get(name=self.validated_data['name'],proficiency=self.validated_data['proficiency'])
-                    new_skill.users.add(user)
-                except Exception as e:
-                    print(e)
-                    self.creating(user)
-            except Exception as e:
-                print(e)
-                raise serializers.ValidationError({"failure":"skill not found for this user"})
-        except Exception as e:
-            print(e)
-            raise serializers.ValidationError({"failure":"skill with given credentials does not exist"})
-        
-
-
 #Serialisers for badge
-class BadgeSerializer(serializers.ModelSerializer):
+
+class ImageUploadSerializer(serializers.ModelSerializer):
     class Meta:
-        model = badge
-        fields = ['title','image_url','description']
+        model = Imageupload
+        fields = ['image']
     def create(self,user):
         try:
-            medal = badge.objects.get(title=self.validated_data['title'])
-            raise serializers.ValidationError([{'failure' : 'badge with this title already exists. try renaming the title'}])
-        except:
-            new_badge = badge(title=self.validated_data['title'],image_url=self.validated_data['image_url'],description=self.validated_data['description'],user=user)
-            new_badge.save()
-
-
-
-
-        
-
-
-
-
-
-
-
-
-
-
-            
-
-        
-        
-    
-
-    
-
-
-
-
-
-
-    
-       
-
+            img = Imageupload.objects.get(user=user)
+            img.image = self.validated_data['image']
+            img.save()
+        except Exception as e:
+            print(e)
+            new_img  = Imageupload(image=self.validated_data['image'],user=user)
+            new_img.save()
 
 

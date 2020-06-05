@@ -11,50 +11,55 @@ from rest_apis.api.serializers import SkillsSerializer
 from rest_apis.models import skills
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
-def api_addskill(request):
-    serial= SkillsSerializer(data=request.data)
-    if serial.is_valid():
-        serial.add(request.user)
-        return Response([{"success" : "skill added successfully"}])
-
-@api_view(["DELETE"])
-@permission_classes([IsAuthenticated])
-def api_deleteskill(request):
-    serial = SkillsSerializer(data=request.data)
-    if serial.is_valid():
-        serial.delete(request.user)
-        return Response([{"success":"skill deleted"}])
-
-        
-@api_view(["GET"])
-@permission_classes([IsAuthenticated])
-def api_getskill(request):
-    try:
-        skill = skills.objects.filter(users=request.user)
-        
-        serial = SkillsSerializer(skill,many=True)
-        return Response(serial.data)
-    except:
-        data= {}
-        data['failure']  =  "You don't have any skills yet, why are u hiding your talent let the world know your skill"
-        return Response(data=[data],status=status.HTTP_400_BAD_REQUEST)
+def api_add_skills(request):
+    errors=[]
+    for skill in request.data['skills']:
+        serial = SkillsSerializer(data=skill)
+        if serial.is_valid():
+            serial.add(request.user)
+        else:
+            errors.append({skill['name']:serial.errors})
+    if(len(errors)==0):
+        return Response([{"success":"All new skills are added successfully"}],status=status.HTTP_200_OK)
+    else:
+        return Response(errors,status=status.HTTP_400_BAD_REQUEST)        
+    
 
 @api_view(["PUT"])
 @permission_classes([IsAuthenticated])
-def api_updateskill(request,name,proficiency):
-    serial = SkillsSerializer(data=request.data)
-    if serial.is_valid():
-        serial.update(request.user,name,proficiency)
-        return Response([{"success":"skill updated"}])
-    else:
-        return Response([serial.errors],status=status.HTTP_400_BAD_REQUEST)
-
-@api_view(['GET'])
+def api_delete_skills(request):
+    for id in request.data['ids']:
+        h = skills.objects.get(id=id)
+        h.users.remove(request.user)
+    return Response([{"success" : "User is removed from the skills with given ids"}],status=status.HTTP_200_OK)
+        
+@api_view(["GET"])
 @permission_classes([IsAuthenticated])
-def api_get_all_skills(request):
-    all_skills = skills.objects.all()
-    serial = SkillsSerializer(all_skills,many=True)
-    return Response(serial.data)
+def api_get_skills(request):
+   skills_list =[]
+   try:
+       skills_All = skills.objects.filter(users=request.user)
+       for h in list(skills_All):
+           skills_list.append({"name":h.name,"competancy":h.competancy,"id":h.id})
+       return Response(skills_list,status=status.HTTP_200_OK)
+   except:
+       return Response([{"failure":"User with given id doesn't have any skill. try adding one"}],status=status.HTTP_400_BAD_REQUEST)
+
+    
+    
+
+@api_view(["PUT"])
+@permission_classes([IsAuthenticated])
+def api_update_skills(request):
+    for skill in request.data['updated_skills']:
+        desired_skill = skills.objects.get(id=skill['id'])
+        desired_skill.competancy = skill['competancy']
+        desired_skill.save()
+    return Response([{"success" : "Selected skills updated"}])
+    
+    
+
+
 
         
     
