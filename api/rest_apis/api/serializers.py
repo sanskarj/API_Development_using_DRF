@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 from django.contrib.auth import login,authenticate
 
-from rest_apis.models import userinfo,profileimage,communication,hobby,skills,chat,projects,achievements,badge,Imageupload
+from rest_apis.models import userinfo,communication,hobby,skills,chat,projects,achievements,badge
 
 class Registeruser(serializers.ModelSerializer):
     password2 = serializers.CharField(style={'input_type' : 'password'})
@@ -35,15 +35,6 @@ class Userinfoserializer(serializers.ModelSerializer):
         new_user.save()
         return new_user
 #Serializer for profile image
-
-class Profileimageserializer(serializers.ModelSerializer):
-    class Meta:
-        model = profileimage
-        fields = ['profile_image_url']
-    def save(self,user):
-        image = profileimage(profile_image_url=self.validated_data['profile_image_url'],user=user)
-        image.save()
-        return image
     
 #Serializer for communication
 class CommunicationSerializer(serializers.ModelSerializer):
@@ -131,19 +122,4 @@ class SkillsSerializer(serializers.ModelSerializer):
             print(e)
             self.creating(user)
 #Serialisers for badge
-
-class ImageUploadSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Imageupload
-        fields = ['image']
-    def create(self,user):
-        try:
-            img = Imageupload.objects.get(user=user)
-            img.image = self.validated_data['image']
-            img.save()
-        except Exception as e:
-            print(e)
-            new_img  = Imageupload(image=self.validated_data['image'],user=user)
-            new_img.save()
-
 

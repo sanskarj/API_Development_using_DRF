@@ -1,15 +1,35 @@
 from rest_framework import status,permissions
 from rest_framework.response import Response
-from rest_framework.decorators import api_view,permission_classes
+from rest_framework.decorators import api_view,permission_classes,action
 
 from rest_apis.api.serializers import  Registeruser
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import logout,login,authenticate
 from rest_framework.permissions import IsAuthenticated
 from rest_apis.models import userinfo
+from rest_framework.schemas import ManualSchema
+from rest_framework.compat import coreapi,coreschema
+
+
+custom_schema = ManualSchema(fields=[
+        coreapi.Field(
+            "first_field",
+            required=True,
+            location="path",
+            schema=coreschema.String()
+        ),
+        coreapi.Field(
+            "second_field",
+            required=True,
+            location="path",
+            schema=coreschema.String()
+        ),
+    ])
+
 
 @api_view(["POST"])
 @permission_classes([permissions.AllowAny])
+@action(schema =custom_schema,detail=True)
 def api_register_user(request):
     serial = Registeruser(data=request.data)
     data = {}

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_apis',
      'rest_framework.authtoken',
      'django_extensions',
+     
     
 ]
 
@@ -49,7 +50,8 @@ REST_FRAMEWORK={
    ],
    'DEFAULT_PERMISSION_CLASSES' : [
        'rest_framework.permissions.IsAuthenticated',
-   ]
+   ],
+   
 }
 
 MIDDLEWARE = [

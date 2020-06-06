@@ -14,9 +14,7 @@ class userinfo(models.Model):
     location = models.CharField(max_length=200)
     aboutme = models.CharField(max_length=200)
     user = models.ForeignKey(User,on_delete=models.CASCADE,null=True)
-class profileimage(models.Model):
-    profile_image_url = models.URLField()
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
+
 
 class communication(models.Model):
     medium = models.CharField(max_length=100)
@@ -57,9 +55,7 @@ class badge(models.Model):
     description = models.CharField(max_length=200)
     user = models.ForeignKey(User,on_delete=models.CASCADE)
 
-class Imageupload(models.Model):
-    image = models.ImageField(blank=False,null=False)
-    user  = models.ForeignKey(User,on_delete=models.CASCADE)
+
 
 
     

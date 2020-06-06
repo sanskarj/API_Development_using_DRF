@@ -22,7 +22,7 @@ from django.contrib.auth.models import User
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/',include('rest_apis.api.urls')),
+    path('',include('rest_apis.api.urls')),
     #path('notify/',include(notifications.urls,namespace="notifications"))
 
    
