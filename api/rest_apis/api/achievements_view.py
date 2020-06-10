@@ -32,8 +32,21 @@ class Achievements(APIView):
         else:
             return Response(serial.errors,status=status.HTTP_400_BAD_REQUEST)
     def delete(self,request,title):
+        #print(title)
+        #print(type(title))
+        title1=''
+        for i in range(len(title)):
+            if title[i]=='%':
+                if title[i+1]=='2':
+                    if title[i+2]=='0':
+                        title1+=' '
+            
+            else:
+                title1+=title[i]
+
         try:
             achieve = achievements.objects.get(title=title,user=request.user)
+            print(achieve)
             achieve.delete()
             return Response([{"success":"Achievement deleted successfully"}])
         except:
