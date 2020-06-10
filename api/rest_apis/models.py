@@ -40,7 +40,7 @@ class projects(models.Model):
     users = models.ManyToManyField(User)
     skills = models.ManyToManyField(Skill_names)
 class achievements(models.Model):
-    date = models.DateField()
+    date = models.TextField()
     title = models.CharField(max_length=32)
     description  = models.CharField(max_length=200)
     user = models.ForeignKey(User,on_delete=models.CASCADE)
