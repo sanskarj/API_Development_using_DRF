@@ -115,6 +115,14 @@ class Projects(APIView):
         pro.ends = request.data['ends']
         pro.description = request.data['description']
         pro.status = request.data['status']
+        pro.client_name = request.data['client_name']
+        pro.client_location  = request.data['client_location']
+        pro.location_of_project_execution = request.data['location_of_project_execution']
+        pro.Industry_of_the_client = request.data['Industry_of_the_client']
+        pro.Role = request.data['Role']
+        pro.team_size  = request.data['team_size']
+        pro.case_study_submitted  = request.data['case_study_submitted']
+        
         pro.save()
         return Response([{"success":"project updated"}])
 

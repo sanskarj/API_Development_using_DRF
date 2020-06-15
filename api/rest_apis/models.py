@@ -52,6 +52,13 @@ class projects(models.Model):
     description = models.CharField(max_length=300)
     users = models.ManyToManyField(User)
     skills = models.ManyToManyField(Skill_names)
+    client_name = models.TextField()
+    client_location = models.TextField()
+    location_of_project_execution = models.TextField()
+    Industry_of_the_client = models.TextField()
+    Role = models.TextField()
+    team_size = models.BigIntegerField()
+    case_study_submitted = models.TextField()
 class achievements(models.Model):
     date = models.TextField()
     title = models.CharField(max_length=32)
