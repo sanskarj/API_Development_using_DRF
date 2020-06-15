@@ -9,11 +9,23 @@ from django.contrib.auth.models import AbstractBaseUser,User
 
 # Create your models here.
 
+class Industries(models.Model):
+    name = models.TextField()
+class languages(models.Model):
+    name = models.TextField()
 class userinfo(models.Model):
     name = models.CharField(max_length=32)
     location = models.CharField(max_length=200)
     aboutme = models.CharField(max_length=200)
-    
+    email  = models.EmailField()
+    employeeid  = models.TextField()
+    ContactNo = models.BigIntegerField()
+    Gender = models.TextField()
+    Total_Experience = models.TextField()
+    industries = models.ManyToManyField(Industries)
+    languages = models.ManyToManyField(languages)
+    summary = models.TextField()
+    joiningdate = models.TextField()
     user = models.ForeignKey(User,on_delete=models.CASCADE,null=True)
 
 
