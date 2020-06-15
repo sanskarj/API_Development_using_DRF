@@ -26,7 +26,7 @@ SECRET_KEY = '*x=n50ez=)v6gj+ynu)=-_khyqwb)%(m7w+@fo%%=4o-rt_6d)'
 DEBUG = True
 
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]','10.0.2.2']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]','10.0.2.2','192.168.1.6','192.168.1.5','192.168.1.4','192.168.1.3','192.168.1.9']
 # Application definition
 
 INSTALLED_APPS = [
@@ -92,9 +92,9 @@ WSGI_APPLICATION = 'api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'users',
+        'NAME': 'students',
         'USER': 'root',
-        'PASSWORD': 'jain@123',
+        'PASSWORD': 'udbhav@123',
         'HOST': 'localhost',
         'PORT': '3306',
     }
