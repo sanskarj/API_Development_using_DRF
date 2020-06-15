@@ -13,6 +13,15 @@ from rest_framework.views import APIView
 
 class Achievements(APIView):
     permission_classes = [permissions.IsAuthenticated]
+    def get(self,request):
+        achievement_list =[]
+        try:
+            achievements1 = achievements.objects.filter(user=request.user)
+            for h in list(achievements1):
+                achievement_list.append({"date":h.date,"title":h.title,"description":h.description})
+            return Response(achievement_list,status=status.HTTP_200_OK)
+        except:
+            return Response([{"failure":"User with given id doesn't have any achievement. try adding one"}],status=status.HTTP_400_BAD_REQUEST)
     def post(self,request):
         serial = AchievementSerializer(data=request.data)
         if serial.is_valid():
@@ -21,8 +30,21 @@ class Achievements(APIView):
         else:
             return Response(serial.errors,status=status.HTTP_400_BAD_REQUEST)
     def delete(self,request,title):
+        #print(title)
+        #print(type(title))
+        title1=''
+        for i in range(len(title)):
+            if title[i]=='%':
+                if title[i+1]=='2':
+                    if title[i+2]=='0':
+                        title1+=' '
+            
+            else:
+                title1+=title[i]
+
         try:
             achieve = achievements.objects.get(title=title,user=request.user)
+            print(achieve)
             achieve.delete()
             return Response([{"success":"Achievement deleted successfully"}])
         except:
