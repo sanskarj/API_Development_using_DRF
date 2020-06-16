@@ -66,11 +66,26 @@ class badge(models.Model):
     description = models.CharField(max_length=200)
     user = models.ForeignKey(User,on_delete=models.CASCADE)
 
-
-
-
+class certification(models.Model):
+    title = models.TextField()
+    organization  = models.TextField()
+    certificate_type = models.TextField()
+    year = models.CharField(max_length=4)
+    certificate = models.URLField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+class education(models.Model):
+    degree = models.TextField()
+    institute = models.TextField()
+    year = models.CharField(max_length=4)
+    specialization = models.TextField()
+    gpa = models.TextField()
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
     
-
+class blog(models.Model):
+    title = models.TextField()
+    description = models.TextField()
+    link = models.URLField()
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
     
     
     

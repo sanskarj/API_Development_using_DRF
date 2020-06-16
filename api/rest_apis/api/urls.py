@@ -10,7 +10,9 @@ from rest_apis.api.project_view import Projects
 from rest_apis.api.achievements_view import Achievements
 from rest_apis.api.skills_view import Skills
 
-
+from rest_apis.api.education_view import Education
+from rest_apis.api.blog_view import Blog
+from rest_apis.api.certification_view import Certification
 
 
   
@@ -36,6 +38,11 @@ urlpatterns = [
     path('achievements/<title>',Achievements.as_view(),name="achieve_view"),
 
     path('skills',Skills.as_view(),name="skills_api"),
+
+    path('education',Education.as_view(),name="education_view"),
+    path('certification',Certification.as_view(),name="certification_view"),
+    path('blog',Blog.as_view(),name="blog_view"),
+
     
 
 

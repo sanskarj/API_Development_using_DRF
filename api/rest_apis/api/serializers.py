@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 from django.contrib.auth import login,authenticate
 
-from rest_apis.models import userinfo,communication,hobby,skills,chat,projects,achievements,badge
+from rest_apis.models import userinfo,communication,hobby,skills,chat,projects,achievements,badge,education,certification,blog
 
 class Registeruser(serializers.ModelSerializer):
     password2 = serializers.CharField(style={'input_type' : 'password'})
@@ -122,4 +122,29 @@ class SkillsSerializer(serializers.ModelSerializer):
             print(e)
             self.creating(user)
 #Serialisers for badge
+
+class EducationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = education
+        fields = ['degree','institute','year','specialization','gpa']
+    def create(self,user):
+        new_education = education(degree=self.validated_data['degree'],institute=self.validated_data['institute'],year=self.validated_data['year'],specialization=self.validated_data['specialization'],gpa=self.validated_data['gpa'],user=user)
+        new_education.save()
+class BlogSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = blog
+        fields = ['title','description','link']
+
+    def create(self,user):
+        new_blog = blog(title=self.validated_data['title'],description=self.validated_data['description'],link=self.validated_data['link'],user=user) 
+        new_blog.save()
+class CertificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = certification
+        fields = ['title','organization','certificate_type','year','certificate']
+    def create(self,user):
+        new_certificate = certification(title=self.validated_data['title'],organization=self.validated_data['organization'],year=self.validated_data['year'],certificate_type=self.validated_data['certificate_type'],certificate=self.validated_data['certificate'],user=user)
+
+        new_certificate.save()
+
 
