@@ -28,10 +28,10 @@ class Registeruser(serializers.ModelSerializer):
 class Userinfoserializer(serializers.ModelSerializer):
     class Meta:
         model = userinfo
-        fields  = ['name','location','aboutme','email','joiningdate','ContactNo','Gender','Total_Experience','summary','employeeid']
+        fields  = ['name','location','aboutme']
     
     def save(self,user):
-        new_user = userinfo(name=self.validated_data["name"],location=self.validated_data["location"],aboutme=self.validated_data["aboutme"],email=self.validated_data["email"],joiningdate=self.validated_data["joiningdate"],ContactNo=self.validated_data["ContactNo"],Gender=self.validated_data["Gender"],Total_Experience=self.validated_data["Total_Experience"],summary=self.validated_data["summary"],employeeid=self.validated_data["employeeid"],user=user)
+        new_user = userinfo(name=self.validated_data["name"],location=self.validated_data["location"],aboutme=self.validated_data["aboutme"],user=user)
         new_user.save()
         return new_user
 #Serializer for profile image
