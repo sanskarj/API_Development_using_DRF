@@ -57,7 +57,7 @@ class projects(models.Model):
     location_of_project_execution = models.TextField()
     Industry_of_the_client = models.TextField()
     Role = models.TextField()
-    team_size = models.BigIntegerField()
+    team_size = models.TextField()
     case_study_submitted = models.TextField()
 class achievements(models.Model):
     date = models.TextField()

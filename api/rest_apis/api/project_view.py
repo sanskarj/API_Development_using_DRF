@@ -41,7 +41,7 @@ class Projects(APIView):
         try:
             pro = projects.objects.filter(users=request.user)
             for new_pro in list(pro):
-                pr.append({"info":new_pro.info,"starts":new_pro.starts,"ends":new_pro.ends,"description":new_pro.description,"status":new_pro.status,"id":new_pro.id})
+                pr.append({"info":new_pro.info,"starts":new_pro.starts,"ends":new_pro.ends,"description":new_pro.description,"status":new_pro.status, "client_name":new_pro.client_name,"client_location":new_pro.client_location,"location_of_project_execution":new_pro.location_of_project_execution,"Industry_of_the_client":new_pro.Industry_of_the_client,"Role":new_pro.Role,"team_size":new_pro.team_size, "case_study_submitted":new_pro.case_study_submitted,"id":new_pro.id})
             return Response(pr,status=status.HTTP_200_OK)
         except:
             return Response([{"failure":"User is not part of any project"}],status=status.HTTP_400_BAD_REQUEST)
