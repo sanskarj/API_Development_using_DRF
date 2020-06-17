@@ -49,7 +49,7 @@ class projects(models.Model):
     Industry_of_the_client = models.TextField()
     Role = models.TextField()
     team_size = models.TextField()
-    case_study_submitted = models.TextField()
+    #case_study_submitted = models.TextField()
 class achievements(models.Model):
     date = models.TextField()
     title = models.CharField(max_length=32)
