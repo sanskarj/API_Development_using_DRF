@@ -86,7 +86,9 @@ class blog(models.Model):
     title = models.TextField()
     description = models.TextField()
     link = models.URLField()
+    blog_site = models.TextField()
     user = models.ForeignKey(User,on_delete=models.CASCADE)
+    
     
     
     

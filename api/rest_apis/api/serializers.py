@@ -133,10 +133,10 @@ class EducationSerializer(serializers.ModelSerializer):
 class BlogSerializer(serializers.ModelSerializer):
     class Meta:
         model = blog
-        fields = ['title','description','link']
+        fields = ['title','description','link','blog_site']
 
     def create(self,user):
-        new_blog = blog(title=self.validated_data['title'],description=self.validated_data['description'],link=self.validated_data['link'],user=user) 
+        new_blog = blog(title=self.validated_data['title'],description=self.validated_data['description'],link=self.validated_data['link'], blog_site=self.validated_data['blog_site'],  user=user) 
         new_blog.save()
 class CertificationSerializer(serializers.ModelSerializer):
     class Meta:
