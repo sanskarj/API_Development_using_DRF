@@ -126,9 +126,9 @@ class SkillsSerializer(serializers.ModelSerializer):
 class EducationSerializer(serializers.ModelSerializer):
     class Meta:
         model = education
-        fields = ['degree','institute','year','specialization','gpa']
+        fields = ['degree','institute','year','specialization','gpa','status']
     def create(self,user):
-        new_education = education(degree=self.validated_data['degree'],institute=self.validated_data['institute'],year=self.validated_data['year'],specialization=self.validated_data['specialization'],gpa=self.validated_data['gpa'],user=user)
+        new_education = education(degree=self.validated_data['degree'],institute=self.validated_data['institute'],year=self.validated_data['year'],specialization=self.validated_data['specialization'],gpa=self.validated_data['gpa'], status=self.validated_data['status'],user=user)
         new_education.save()
 class BlogSerializer(serializers.ModelSerializer):
     class Meta:

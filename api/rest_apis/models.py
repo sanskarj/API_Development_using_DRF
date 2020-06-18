@@ -79,6 +79,7 @@ class education(models.Model):
     year = models.CharField(max_length=4)
     specialization = models.TextField()
     gpa = models.TextField()
+    status = models.TextField()
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     
 class blog(models.Model):
