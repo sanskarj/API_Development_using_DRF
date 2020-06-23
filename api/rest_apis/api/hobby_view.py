@@ -11,8 +11,21 @@ from rest_apis.api.serializers import HobbySerializer
 from rest_apis.models import hobby
 from rest_framework.views import APIView
 
-class Hobbies(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+class hobbypermission(permissions.BasePermission):
+    def has_permission(self, request, view):
+        if request.user.is_superuser:
+            return True
+        elif request.method=='GET':
+            return True
+        else:
+            return False
+
+
+
+
+class Hobbies(APIView,permissions.BasePermission):
+    permission_classes = [permissions.IsAuthenticated and hobbypermission]
+    
     def post(self,request):
         errors=[]
         for new_hob in request.data['hobbies']:
