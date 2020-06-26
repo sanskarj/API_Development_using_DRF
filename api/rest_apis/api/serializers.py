@@ -78,11 +78,11 @@ class HobbySerializer(serializers.ModelSerializer):
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model =  projects
-        fields= ['info','starts','ends','status','description','client_name','client_location','location_of_project_execution','Industry_of_the_client','Role','team_size']
+        fields= ['info','starts','ends','status','project_description','client_name','client_location','location_of_project_execution','Industry_of_the_client','Role','team_size','project_details','proposed_solution','multi_vendor','benefits']
     def creating(self,user):
         
 
-        new_project = projects(info=self.validated_data['info'],starts=self.validated_data['starts'],ends=self.validated_data['ends'],status=self.validated_data['status'],description=self.validated_data['description'],client_name=self.validated_data['client_name'],client_location=self.validated_data['client_location'],location_of_project_execution=self.validated_data['location_of_project_execution'],Industry_of_the_client=self.validated_data['Industry_of_the_client'],Role=self.validated_data['Role'],team_size=self.validated_data['team_size'])
+        new_project = projects(info=self.validated_data['info'],starts=self.validated_data['starts'],ends=self.validated_data['ends'],status=self.validated_data['status'],project_description=self.validated_data['project_description'],client_name=self.validated_data['client_name'],client_location=self.validated_data['client_location'],location_of_project_execution=self.validated_data['location_of_project_execution'],Industry_of_the_client=self.validated_data['Industry_of_the_client'],Role=self.validated_data['Role'],team_size=self.validated_data['team_size'],project_details=self.validated_data['project_details'],proposed_solution=self.validated_data['proposed_solution'],multi_vendor=self.validated_data['multi_vendor'],benefits=self.validated_data['benefits'])
         new_project.save()
         new_project.users.add(user)
         new_project.save()

@@ -40,7 +40,13 @@ class projects(models.Model):
     starts = models.DateField()
     ends = models.DateField()
     status = models.CharField(max_length=32)
-    description = models.CharField(max_length=300)
+    #new fields
+    project_description = models.CharField(max_length=300)
+    project_details = models.TextField()   #business problem
+    proposed_solution = models.TextField()  #solution description
+    multi_vendor = models.BooleanField()  #multiple vendors
+    benefits = models.TextField()
+    #ends here   
     users = models.ManyToManyField(User)
     skills = models.ManyToManyField(Skill_names)
     client_name = models.TextField()

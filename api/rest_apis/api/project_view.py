@@ -41,7 +41,7 @@ class Projects(APIView):
         try:
             pro = projects.objects.filter(users=request.user)
             for new_pro in list(pro):
-                pr.append({"info":new_pro.info,"starts":new_pro.starts,"ends":new_pro.ends,"description":new_pro.description,"status":new_pro.status, "client_name":new_pro.client_name,"client_location":new_pro.client_location,"location_of_project_execution":new_pro.location_of_project_execution,"Industry_of_the_client":new_pro.Industry_of_the_client,"Role":new_pro.Role,"team_size":new_pro.team_size,"id":new_pro.id})
+                pr.append({"info":new_pro.info,"starts":new_pro.starts,"ends":new_pro.ends,"project_description":new_pro.project_description,"status":new_pro.status, "client_name":new_pro.client_name,"client_location":new_pro.client_location,"location_of_project_execution":new_pro.location_of_project_execution,"Industry_of_the_client":new_pro.Industry_of_the_client,"Role":new_pro.Role,"team_size":new_pro.team_size,"project_details":new_pro.project_details,"proposed_solution":new_pro.proposed_solution,"benefits":new_pro.benefits,"multi_vendor":new_pro.multi_vendor,"id":new_pro.id,})
             return Response(pr,status=status.HTTP_200_OK)
         except:
             return Response([{"failure":"User is not part of any project"}],status=status.HTTP_400_BAD_REQUEST)
@@ -113,7 +113,7 @@ class Projects(APIView):
         pro.info  = request.data['info']
         pro.starts  = request.data['starts']
         pro.ends = request.data['ends']
-        pro.description = request.data['description']
+        pro.project_description = request.data['project_description']
         pro.status = request.data['status']
         pro.client_name = request.data['client_name']
         pro.client_location  = request.data['client_location']
@@ -121,6 +121,12 @@ class Projects(APIView):
         pro.Industry_of_the_client = request.data['Industry_of_the_client']
         pro.Role = request.data['Role']
         pro.team_size  = request.data['team_size']
+        pro.project_details  = request.data['project_details']
+        pro.proposed_solution = request.data['proposed_solution']
+        pro.multi_vendor = request.data['multi_vendor']
+        pro.benefits = request.data['benefits']
+        
+
         
         
         pro.save()
